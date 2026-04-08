@@ -6,18 +6,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Princess</title>
 
+<link rel="stylesheet" href="./index_files/default.css">
+
+<script src="./index_files/jquery.min.js"></script>
+<script src="./index_files/jscex.min.js"></script>
+<script src="./index_files/jscex-parser.js"></script>
+<script src="./index_files/jscex-jit.js"></script>
+<script src="./index_files/jscex-builderbase.min.js"></script>
+<script src="./index_files/jscex-async.min.js"></script>
+<script src="./index_files/jscex-async-powerpack.min.js"></script>
+<script src="./index_files/functions.js"></script>
+<script src="./index_files/love.js"></script>
+<script src="./config.js"></script>
+
 <style>
 body {
     margin: 0;
     padding: 0;
-    text-align: center;
-    font-family: Arial, sans-serif;
+    overflow-x: hidden;
 }
 
-/* Heading */
-h1 {
+/* Title */
+.title {
+    text-align: center;
     font-size: 5vw;
-    padding: 20px;
+    padding: 15px;
 }
 
 /* Music Button */
@@ -25,15 +38,9 @@ h1 {
     position: fixed;
     top: 20px;
     right: 20px;
-    width: 60px;
-    height: 60px;
-    z-index: 1000;
-}
-
-/* Responsive canvas */
-#canvas {
-    width: 100%;
-    height: auto;
+    width: 12vw;
+    max-width: 70px;
+    z-index: 10001;
 }
 
 /* Rotate animation */
@@ -46,15 +53,24 @@ h1 {
     100% { transform: rotate(360deg); }
 }
 
-/* Text */
+/* Main layout */
 #main {
-    padding: 15px;
-    font-size: 4vw;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
+/* Canvas responsive */
+#canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Desktop fix */
 @media (min-width: 768px) {
-    h1 { font-size: 28px; }
-    #main { font-size: 16px; }
+    .title {
+        font-size: 28px;
+    }
 }
 </style>
 
@@ -62,56 +78,145 @@ h1 {
 
 <body>
 
-<h1>Hey Princess 👑💖 (Click on the music button)</h1>
+<h1 class="title">Hey Princess 👑💖<br>Click on the music button</h1>
 
-<img src="https://ajlovechina.github.io/loveBalloon/static/music.png" 
+<!-- Music Button -->
+<img src="https://ajlovechina.github.io/loveBalloon/static/music.png"
 class="music-btn"
 onclick="toggleMusic(this)">
 
-<audio id="music" loop>
+<audio class="song-audio-autoplay" loop>
     <source src="./syduck.mp3" type="audio/mp3">
 </audio>
 
 <div id="main">
-    <p>Hey Princess 👑💖</p>
 
-    <p>You’re honestly one of the best friends I’ve ever had, and I feel really lucky to have you in my life. You bring so much positivity and happiness, and talking to you always makes my day better.</p>
+<div id="error">
+Hey Princess 👑💖
 
-    <p>I really admire the kind of person you are — kind, strong, and genuine. It’s rare to find someone like you, and I’m glad I did.</p>
+You’re honestly one of the best friends I’ve ever had, and I feel really lucky to have you in my life. You bring so much positivity and happiness, and talking to you always makes my day better.
 
-    <p>Your birthday is coming in a few days, so I just wanted to say in advance — you deserve all the happiness, success, and good things in life.</p>
+I really admire the kind of person you are — kind, strong, and genuine. It’s rare to find someone like you, and I’m glad I did.
 
-    <p>Thank you for always being there and for being such an amazing friend. I’ll always be there for you too 🤍</p>
+Your birthday is coming in a few days, so I just wanted to say in advance — you deserve all the happiness, success, and good things in life.
 
-    <p>Advance Happy Birthday 🎂✨</p>
+Thank you for always being there and for being such an amazing friend. I’ll always be there for you too 🤍
+
+Advance Happy Birthday 🎂✨
 </div>
 
-<canvas id="canvas"></canvas>
+<div id="wrap">
+    <div id="text">
+        <div id="code"></div>
+    </div>
+    <canvas id="canvas"></canvas>
+</div>
+
+</div>
 
 <script>
 function toggleMusic(btn) {
-    let music = document.getElementById("music");
-
-    if (music.paused) {
-        music.play();
+    let m = document.querySelector('.song-audio-autoplay');
+    if (m.paused) {
+        m.play();
         btn.classList.add("rotateImages");
     } else {
-        music.pause();
+        m.pause();
         btn.classList.remove("rotateImages");
     }
 }
 
 /* Responsive canvas */
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
 function resizeCanvas() {
+    var canvas = document.getElementById("canvas");
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 0.6;
+    canvas.height = window.innerHeight * 0.8;
 }
-
 window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+window.onload = resizeCanvas;
+</script>
+
+<script>
+$('#code').html(config.lines.map(item => {
+    return `<span class="say">${item}</span><br><span class="say"> </span><br>`
+}).join(''))
+</script>
+
+<script>
+(function () {
+    var canvas = $('#canvas');
+
+    if (!canvas[0].getContext) {
+        $("#error").show();
+        return false;
+    }
+
+    var width = canvas.width();
+    var height = canvas.height();
+
+    canvas.attr("width", width);
+    canvas.attr("height", height);
+
+    var opts = {
+        seed: { x: width / 2 - 20, color: "rgb(190, 26, 37)", scale: 2 },
+        branch: [[[535,680,570,250,500,200,30,100]]],
+        bloom: { num: 700, width: 1080, height: 650 },
+        footer: { width: 1200, height: 5, speed: 10 }
+    };
+
+    var tree = new Tree(canvas[0], width, height, opts);
+    var seed = tree.seed;
+    var foot = tree.footer;
+    var hold = 1;
+
+    canvas.click(function () { hold = 0; });
+
+    var seedAnimate = eval(Jscex.compile("async", function () {
+        seed.draw();
+        while (hold) { $await(Jscex.Async.sleep(10)); }
+        while (seed.canScale()) {
+            seed.scale(0.95);
+            $await(Jscex.Async.sleep(10));
+        }
+        while (seed.canMove()) {
+            seed.move(0, 2);
+            foot.draw();
+            $await(Jscex.Async.sleep(10));
+        }
+    }));
+
+    var growAnimate = eval(Jscex.compile("async", function () {
+        do {
+            tree.grow();
+            $await(Jscex.Async.sleep(10));
+        } while (tree.canGrow());
+    }));
+
+    var flowAnimate = eval(Jscex.compile("async", function () {
+        do {
+            tree.flower(2);
+            $await(Jscex.Async.sleep(10));
+        } while (tree.canFlower());
+    }));
+
+    var jumpAnimate = eval(Jscex.compile("async", function () {
+        while (true) {
+            tree.ctx.clearRect(0, 0, width, height);
+            tree.jump();
+            foot.draw();
+            $await(Jscex.Async.sleep(25));
+        }
+    }));
+
+    var runAsync = eval(Jscex.compile("async", function () {
+        $await(seedAnimate());
+        $await(growAnimate());
+        $await(flowAnimate());
+        $await(jumpAnimate());
+    }));
+
+    runAsync().start();
+})();
 </script>
 
 </body>
