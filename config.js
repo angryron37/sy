@@ -9,6 +9,5 @@ var config = {
 "Advance Happy Birthday 🎂✨."
        
     ],
-    date:"2026-04-26",
-    names: ["【 Your Senapati 】","‎ "]
+    names: ["【 Your ... 】","‎ "]
 }
