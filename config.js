@@ -1,13 +1,14 @@
 
 var config = {
     lines: [
-        "Dear stfu,",
-        "i never knew how much you mean to me when we first started talking . until today,i still love you as much as i did since the very first day we met. ",
-        " every since you came into my life, i felt like i was the happiest. i just want to let you know how much you mean to me and how much i appreciate you.",
-        "you never failed to make me smile. things aren't getting better every since we fought, i just miss you so much. having random break downs, with you on my mind wondering if you're doing fine. im sorry i wasn't what you wanted,",
-        "im sorry i wasn't the best, im sorry i couldn't be good enough for you.i just hope everything will be okay soon, i really miss how we used to talk.🥹", 
+       "Hey Princess 👑💖",
+"You’re honestly one of the best friends I’ve ever had, and I feel really lucky to have you in my life. You bring so much positivity and happiness, and talking to you always makes my day better.",
+"I really admire the kind of person you are — kind, strong, and genuine. It’s rare to find someone like you, and I’m really glad I did.",
+"Your birthday is coming up in a few days, so I just wanted to say in advance — you deserve all the happiness, success, and beautiful moments in life.",
+"Thank you for always being there and for being such an amazing friend. I’ll always be there for you too 🤍",
+"Advance Happy Birthday 🎂✨."
        
     ],
-    date:"2022-08-09T20:15:00",
-    names: ["☃︎【 Your Tanmay 】","‎ "]
+    date:"2026-04-26",
+    names: ["☃︎【 Your Senapati 】","‎ "]
 }
