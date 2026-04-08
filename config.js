@@ -10,5 +10,5 @@ var config = {
        
     ],
     date:"2026-04-26",
-    names: ["☃︎【 Your Senapati 】","‎ "]
+    names: ["【 Your Senapati 】","‎ "]
 }
